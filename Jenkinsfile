@@ -11,30 +11,19 @@ pipeline {
         stage('code build') {
             steps {
                 echo "code build v karliye"
-                sh "docker build . -t mywebappimg:latest"
+                sh "docker build . -t myappimg:latest"
             }
         }
-
-        ///// if any error during code build :- install docker , sudo usermod -aG docker jenkins , sudo systemctl restart jenkins ( again build now )
-        
         stage('code test') {
             steps {
                 echo "code testing hogya"
             }
         }
-        stage("Push to Docker Hub"){
+        stage('code deploy') {
             steps {
-                echo "pushing the image to docker hub"
-                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag mywebappimg ${env.dockerHubUser}/mywebappimg:latest"
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/mywebappimg:latest"
-                }
+                echo "deploying v hogya h container k andar"
+                sh "docker run -itd -p 8000:8000 myappimg:latest"
             }
         }
-        stage("deploy"){
-            steps {
-                echo "deploying the container"
-                sh "docker-compose down && docker-compose up -d"
     }
 }
