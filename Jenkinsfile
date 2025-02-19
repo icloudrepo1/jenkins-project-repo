@@ -5,7 +5,7 @@ pipeline {
         stage('code clone') {
             steps {
                 echo "code cloning hogya repo se"
-                git url: "https://github.com/cloudrepo1/jenkins-pro.git"
+                git url: "https://github.com/cloudrepo1/jenkins-project-repo.git"
             }
         }
         stage('code build') {
