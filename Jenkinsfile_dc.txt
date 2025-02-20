@@ -11,7 +11,7 @@ pipeline {
         stage('code build') {
             steps {
                 echo "code build v karliye"
-                sh "docker build . -t myappimg:latest"
+                sh "docker build . -t mywebappimg:latest"
             }
         }
         stage('code test') {
@@ -19,11 +19,22 @@ pipeline {
                 echo "code testing hogya"
             }
         }
-        stage('code deploy') {
+        stage("Push to Docker Hub"){
             steps {
-                echo "deploying v hogya h container k andar"
-                sh "docker run -itd -p 8000:8000 myappimg:latest"
+                echo "pushing the image to docker hub"
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker tag mywebappimg ${env.dockerHubUser}/mywebappimg:latest"
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker push ${env.dockerHubUser}/mywebappimg:latest"
+                }
+            }
+        }
+        stage("deploy"){
+            steps {
+                echo "deploying the container"
+                sh "docker-compose down && docker-compose up -d"
             }
         }
     }
 }
+
