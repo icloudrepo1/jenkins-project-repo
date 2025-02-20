@@ -2,6 +2,6 @@ version : "3.3"
 
 services :
   web :
-    image : "urdockerhub/mywebappimg:latest"
+    image : "icloudrepo1/mywebappimg:latest"
     ports :
         - "8000:8000"
