@@ -1,4 +1,4 @@
-### Install
+### Install dependencies ( if you are using ec2-instance as deploy process )
 
 `sudo apt install nodejs -y`
 
